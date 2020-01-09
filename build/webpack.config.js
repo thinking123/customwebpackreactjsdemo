@@ -1,11 +1,31 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const path = require("path");
-const loadr = require('wpt-px2rem-loader');
+const loadr = require("wpt-px2rem-loader");
+
+const isPro = process.env.NODE_ENV == "production";
+
+const plugins = [
+  new HtmlWebpackPlugin({
+    title: "test html",
+    template: "index.html"
+  }),
+  isPro &&
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
+  isPro && new CleanWebpackPlugin()
+].filter(f => f);
+
 module.exports = {
   // context: path.resolve(__dirname, "../src"),
   entry: path.resolve(__dirname, "../src/index.js"),
   output: {
-    path: __dirname + "/dist",
+    path: path.resolve(__dirname, "../dist"),
     filename: "index_bundle.js"
   },
   resolve: {
@@ -23,7 +43,11 @@ module.exports = {
       {
         test: /\.less$/i,
         use: [
-          "style-loader",
+          isPro
+            ? {
+                loader: MiniCssExtractPlugin.loader
+              }
+            : "style-loader",
           {
             loader: "css-loader",
             options: {
@@ -33,8 +57,9 @@ module.exports = {
           {
             loader: "wpt-px2rem-loader",
             options: {
-              exclude:['width'],
-              rem:5
+              exclude: ["width"],
+              rem: 5,
+              sourceMap: !isPro
             }
           },
           "less-loader"
@@ -47,10 +72,5 @@ module.exports = {
   //     compress: true,
   //     port: 9000
   //   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: "test html",
-      template: "index.html"
-    })
-  ]
+  plugins
 };
