@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
-
+const loadr = require('wpt-px2rem-loader');
 module.exports = {
   // context: path.resolve(__dirname, "../src"),
   entry: path.resolve(__dirname, "../src/index.js"),
@@ -28,6 +28,13 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: true
+            }
+          },
+          {
+            loader: "wpt-px2rem-loader",
+            options: {
+              exclude:['width'],
+              rem:5
             }
           },
           "less-loader"
