@@ -1,12 +1,3 @@
-const presets = [
-    [
-        "@babel/preset-react",
-        {
-          "pragma": "dom", // default pragma is React.createElement
-          "pragmaFrag": "DomFrag", // default is React.Fragment
-          "throwIfNamespace": false // defaults to true
-        }
-      ]
-  ];
-  
-  module.exports = { presets };
+const presets = ['@babel/preset-env', '@babel/preset-react'];
+
+module.exports = { presets };
