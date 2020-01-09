@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const path = require("path");
-const loadr = require("wpt-px2rem-loader");
 
 const isPro = process.env.NODE_ENV == "production";
 
@@ -13,8 +12,6 @@ const plugins = [
   }),
   isPro &&
     new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
       filename: "[name].css",
       chunkFilename: "[id].css"
     }),
@@ -22,7 +19,6 @@ const plugins = [
 ].filter(f => f);
 
 module.exports = {
-  // context: path.resolve(__dirname, "../src"),
   entry: path.resolve(__dirname, "../src/index.js"),
   output: {
     path: path.resolve(__dirname, "../dist"),
@@ -67,10 +63,5 @@ module.exports = {
       }
     ]
   },
-  //   devServer: {
-  //     contentBase: path.join(__dirname, 'dist'),
-  //     compress: true,
-  //     port: 9000
-  //   },
   plugins
 };
